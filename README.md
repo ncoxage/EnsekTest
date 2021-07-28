@@ -1,5 +1,5 @@
 # ENSEK Test
 
-VS solution for the ENSEK [Software Engineer (technical) test](blob/master/SoftwareEngineerExercise/BRIEF.pdf)
+VS solution for the ENSEK [Software Engineer (technical) test](SoftwareEngineerExercise/BRIEF.pdf)
 
 
