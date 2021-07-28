@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,11 +15,22 @@ namespace Data.Model
 
         public string LastName { get; private set; }
 
-        public AccountModel( int id, string first = null, string last = null)
+        public virtual List<ReadingModel> Readings { get; private set; }
+
+        public AccountModel( int accountId, string firstName = null, string lastName = null)
         {
-            AccountId = id;
-            FirstName = first;
-            LastName = last;
+            AccountId = accountId;
+            FirstName = firstName;
+            LastName = lastName;
+        }
+
+        public static void Configure(ModelBuilder builder)
+        {
+            builder.Entity<AccountModel>(
+                e =>
+                {
+                    e.HasKey(acc => acc.AccountId);
+                });
         }
     }
 }

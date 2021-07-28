@@ -21,9 +21,9 @@ namespace Data.Tests
             var first = "first";
             var last = "last";
 
-            var sut = new AccountModel(id: id,
-                                       first: first,
-                                       last: last);
+            var sut = new AccountModel(accountId: id,
+                                       firstName: first,
+                                       lastName: last);
 
             sut.AccountId.Should().Be(id);
             sut.FirstName.Should().Be(first);

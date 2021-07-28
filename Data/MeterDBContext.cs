@@ -9,15 +9,24 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using Data.Extensions;
+using Data.Model;
 
 
 namespace Data
 {
     public class MeterDBContext : DbContext
     {
+        public DbSet<AccountModel> Accounts { get => this.Set<AccountModel>(); }
+        public DbSet<ReadingModel> Readings { get => this.Set<ReadingModel>(); }
+
         public MeterDBContext(DbContextOptions dbOptions) : base(dbOptions)
         {
 
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +9,26 @@ namespace Data.Model
 {
     public class ReadingModel
     {
+        public int Id { get; private set; }
         public int AccountId { get; private set; }
         public DateTime ReadAt { get; private set; }
         public int Value { get; private set; }
 
-        public ReadingModel( int accountId, DateTime time, int value)
+        public virtual AccountModel Account { get; private set; }
+
+        public ReadingModel( int accountId, DateTime readAt, int value)
         {
             AccountId = accountId;
-            ReadAt = time;
+            ReadAt = readAt;
             Value = value;
+        }
+
+        public static void Configure(ModelBuilder builder)
+        {
+            builder.Entity<ReadingModel>(
+                e => e.HasOne(read => read.Account)
+                      .WithMany(acc => acc.Readings)
+                );
         }
     }
 }
