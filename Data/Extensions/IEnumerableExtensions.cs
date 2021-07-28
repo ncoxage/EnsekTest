@@ -11,6 +11,5 @@ namespace Data.Extensions
         {
             list.ToList().ForEach(action);
         }
-
     }
 }
