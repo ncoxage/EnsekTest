@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using Microsoft.Data.Sqlite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Microsoft.Data.Sqlite;
+
 
 using Microsoft.EntityFrameworkCore;
 
 
 using FluentAssertions;
 using Xunit;
+
+using Data.Tests.Builders;
 
 namespace Data.Tests
 {
@@ -38,19 +42,12 @@ namespace Data.Tests
         [Fact]
         public void CallsConfigureForDbSetProperties()
         {
-            using (var context = new TestContext(new DbContextOptionsBuilder<TestContext>().UseSqlite(CreateInMemoryDatabase()).Options))
+            using (var context = new TestContext(new DbContextOptionsBuilder<TestContext>().UseSqlite(MeterDBContextBuilder.CreateInMemoryDatabase()).Options))
             {
                 Action test = () => context.Database.EnsureCreated();
 
                 test.Should().Throw<Exception>().WithInnerException<ApplicationException>().WithMessage(CONFIG_MSG);
             }
-        }
-
-        private static DbConnection CreateInMemoryDatabase()
-        {
-            var connection = new SqliteConnection("Filename=:memory:");
-            connection.Open();
-            return connection;
         }
 
     }
