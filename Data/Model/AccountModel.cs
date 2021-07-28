@@ -16,7 +16,9 @@ namespace Data.Model
 
         public AccountModel( int id, string first = null, string last = null)
         {
-
+            AccountId = id;
+            FirstName = first;
+            LastName = last;
         }
     }
 }
