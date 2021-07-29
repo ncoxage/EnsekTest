@@ -14,7 +14,7 @@ using Data.Model;
 
 namespace Data
 {
-    public class MeterDBContext : DbContext
+    public class MeterDBContext : DbContext, IMeterDBContext
     {
         public DbSet<AccountModel> Accounts { get => this.Set<AccountModel>(); }
         public DbSet<ReadingModel> Readings { get => this.Set<ReadingModel>(); }

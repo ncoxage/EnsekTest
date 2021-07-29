@@ -15,7 +15,7 @@ namespace Data.Tests
     public class AccountModelTests
     {
         [Fact]
-        public void ctor_PropertiesInitialiedCorrectly()
+        public void ctor_PropertiesInitialisedCorrectly()
         {
             int id = 123;
             var first = "first";

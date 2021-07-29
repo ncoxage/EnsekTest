@@ -46,7 +46,7 @@ namespace Data.Tests
         ///   NEED TO TEST multiple sets !!!
         /// </remarks>
         [Fact]
-        public void CallsConfigureForDbSetProperties()
+        public void CallsConfigureForDbSetProperty()
         {
             using (var context = new TestContext(new DbContextOptionsBuilder<TestContext>().UseSqlite(MeterDBContextBuilder.CreateInMemoryDatabase()).Options))
             {
