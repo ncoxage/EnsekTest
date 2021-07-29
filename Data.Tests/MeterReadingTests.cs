@@ -16,6 +16,146 @@ namespace Data.Tests
 {
     public class MeterReadingTests
     {
+        static Func<int, string> makeReadValue = (readValue) => readValue.ToString("00000");
+        static Func<DateTime, string> makeReadAt = (readAt) => readAt.ToString("dd/MM/yyyy HH:mm");
+
+        #region LoadReading
+
+        [Fact]
+        public void LoadReading_True_WhenReadingValid()
+        {
+            int testId = 123;
+            var seedReading = new ReadingModel(accountId: testId,
+                                               readAt: DateTime.UtcNow,
+                                               value: 0);
+
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) })
+                                       .ReadingSeeds(new[] { seedReading }))
+            {
+                var context = builder.Build();
+
+                context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
+                context.Readings.Count().Should().Be(1);
+
+                var input = (new List<MeterReading> { new MeterReading { AccountId = seedReading.AccountId.ToString(),
+                                                                         ReadAt = makeReadAt(seedReading.ReadAt),
+                                                                         ReadValue = makeReadValue(seedReading.Value)} })
+                            .GetEnumerator();
+                input.MoveNext();
+
+                MeterReading.LoadReading(input, context).Should().BeFalse();
+
+                context.Readings.Count().Should().Be(1);
+            }
+        }
+
+        [Fact]
+        public void LoadReading_False_WhenDupliactReading()
+        {
+            int testId = 123;
+            var seedReading = new ReadingModel(accountId: testId,
+                                               readAt: DateTime.UtcNow,
+                                               value: 0);
+
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) })
+                                       .ReadingSeeds(new[] { seedReading }))
+            {
+                var context = builder.Build();
+
+                context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
+                context.Readings.Count().Should().Be(1);
+
+                var input = (new List<MeterReading> { new MeterReading { AccountId = seedReading.AccountId.ToString(),
+                                                                         ReadAt = makeReadAt(seedReading.ReadAt),
+                                                                         ReadValue = makeReadValue(seedReading.Value)} })
+                            .GetEnumerator();
+                input.MoveNext();
+
+                MeterReading.LoadReading(input, context).Should().BeFalse();
+
+                context.Readings.Count().Should().Be(1);
+            }
+        }
+
+        [Fact]
+        public void LoadReading_False_WhenReadValueInvalid()
+        {
+            int testId = 123;
+
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) }))
+            {
+                var context = builder.Build();
+
+                context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
+                context.Readings.Count().Should().Be(0);
+
+                var input = (new List<MeterReading> { new MeterReading { AccountId = (testId + 1).ToString(),
+                                                                         ReadAt = makeReadAt(DateTime.UtcNow),
+                                                                         ReadValue = "0"} })
+                            .GetEnumerator();
+                input.MoveNext();
+
+                MeterReading.LoadReading(input, context).Should().BeFalse();
+
+                context.Readings.Count().Should().Be(0);
+            }
+        }
+
+        [Fact]
+        public void LoadReading_False_WhenReadAtInvalid()
+        {
+            int testId = 123;
+
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) }))
+            {
+                var context = builder.Build();
+
+                context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
+                context.Readings.Count().Should().Be(0);
+
+                var input = (new List<MeterReading> { new MeterReading { AccountId = testId.ToString(),
+                                                                         ReadAt = string.Empty,
+                                                                         ReadValue = makeReadValue(0)} })
+                            .GetEnumerator();
+                input.MoveNext();
+
+                MeterReading.LoadReading(input, context).Should().BeFalse();
+
+                context.Readings.Count().Should().Be(0);
+            }
+        }
+
+        [Fact]
+        public void LoadReading_False_WhenAccountMissing()
+        {
+            int testId = 123;
+
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) }))
+            {
+                var context = builder.Build();
+
+                context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
+                context.Readings.Count().Should().Be(0);
+
+                var input = (new List<MeterReading> { new MeterReading { AccountId = (testId + 1).ToString(),
+                                                                         ReadAt = makeReadAt(DateTime.UtcNow),
+                                                                         ReadValue = makeReadValue(0)} })
+                            .GetEnumerator();
+                input.MoveNext();
+
+                MeterReading.LoadReading(input, context).Should().BeFalse();
+              
+                context.Readings.Count().Should().Be(0);
+            }
+        }
+
+        #endregion
+
         #region ReadAtIsValid
 
         [Theory]
@@ -24,11 +164,11 @@ namespace Data.Tests
         [InlineData("29/02/2020 12:00")]
         public void ReadAtIsValid_True_WhenCorrectFormat(string readAt)
         {
-           var sut = new MeterReading
+            var sut = new MeterReading
             {
                 AccountId = "123",
                 ReadAt = readAt,
-                ReadValue = 0.ToString("00000")
+                ReadValue = makeReadValue(0)
             };
 
             sut.ReadAtIsValid().Should().BeFalse();
@@ -49,7 +189,7 @@ namespace Data.Tests
             {
                 AccountId = "123",
                 ReadAt = readAt,
-                ReadValue = 0.ToString("00000")
+                ReadValue = makeReadValue(0)
             };
 
             sut.ReadAtIsValid().Should().BeFalse();
@@ -68,7 +208,7 @@ namespace Data.Tests
             var sut = new MeterReading
             {
                 AccountId = "123",
-                ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                ReadAt = makeReadAt(DateTime.UtcNow),
                 ReadValue = value
             };
 
@@ -89,7 +229,7 @@ namespace Data.Tests
             var sut = new MeterReading
             {
                 AccountId = "123",
-                ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                ReadAt = makeReadAt(DateTime.UtcNow),
                 ReadValue = value
             };
 
@@ -118,8 +258,8 @@ namespace Data.Tests
                 var sut = new MeterReading
                 {
                     AccountId = testId.ToString(),
-                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
-                    ReadValue = 0.ToString("00000")
+                    ReadAt = makeReadAt(DateTime.UtcNow),
+                    ReadValue = makeReadValue(0)
                 };
 
                 sut.AccountIdIsValid(context).Should().BeTrue();
@@ -140,8 +280,8 @@ namespace Data.Tests
                 var sut = new MeterReading
                 {
                     AccountId = "1234",
-                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
-                    ReadValue = 0.ToString("00000")
+                    ReadAt = makeReadAt(DateTime.UtcNow),
+                    ReadValue = makeReadValue(0)
                 };
 
                 sut.AccountIdIsValid(context).Should().BeFalse();
@@ -159,8 +299,8 @@ namespace Data.Tests
                 var sut = new MeterReading
                 {
                     AccountId = "123",
-                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
-                    ReadValue = 0.ToString("00000")
+                    ReadAt = makeReadAt(DateTime.UtcNow),
+                    ReadValue = makeReadValue(0)
                 };
 
                 sut.AccountIdIsValid(context).Should().BeFalse();
@@ -189,8 +329,8 @@ namespace Data.Tests
                 var sut = new MeterReading
                 {
                     AccountId = testId.ToString(),
-                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
-                    ReadValue = 0.ToString("00000")
+                    ReadAt = makeReadAt(DateTime.UtcNow),
+                    ReadValue = makeReadValue(0)
                 };
 
                 sut.AccountIdIsValid(context).Should().BeFalse();

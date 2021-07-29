@@ -105,6 +105,7 @@ namespace Data
                                                           readAt: Convert.ToDateTime(reading.ReadAt),
                                                           value: Convert.ToInt32(reading.ReadValue)));
 
+                    context.SaveChanges();
 
                     return true;
                 }
