@@ -39,6 +39,12 @@ namespace Data.Tests
             public DbSet<DummySet> dummy { get => this.Set<DummySet>(); }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        ///   NEED TO TEST multiple sets !!!
+        /// </remarks>
         [Fact]
         public void CallsConfigureForDbSetProperties()
         {

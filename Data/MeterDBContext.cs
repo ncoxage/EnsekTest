@@ -29,6 +29,13 @@ namespace Data
             optionsBuilder.UseLazyLoadingProxies();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        /// <remarks>
+        /// Need to remove literals, and assumed method signatures - possibly using config/reflection combination.
+        /// </remarks>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             var loaded = new List<string>();
