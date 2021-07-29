@@ -70,6 +70,12 @@ namespace Data.Tests.Builders
             return this;
         }
 
+        internal MeterDBContextBuilder ReadingSeeds(IEnumerable<ReadingModel> seedReadings)
+        {
+            _readingsSeed = new List<ReadingModel>(seedReadings);
+            return this;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
