@@ -29,7 +29,7 @@ namespace Data.Tests
             var seedAccount = new AccountModel(accountId: seedId);
 
             using (var builder = new MeterDBContextBuilder()
-                                    .AccountSeeds(new List<AccountModel> { seedAccount }))
+                                       .AccountSeeds(new List<AccountModel> { seedAccount }))
             {
                 var context = builder.Build();
 
@@ -53,10 +53,10 @@ namespace Data.Tests
             var seedAccount = new AccountModel(accountId: seedId);
 
             using (var builder = new MeterDBContextBuilder()
-                                    .AccountSeeds(new List<AccountModel> { seedAccount })
-                                    .ReadingSeeds(new List<ReadingModel> { new ReadingModel(accountId: seedId,
-                                                                                            readAt: readTime,
-                                                                                            value: 1) }))
+                                       .AccountSeeds(new List<AccountModel> { seedAccount })
+                                       .ReadingSeeds(new List<ReadingModel> { new ReadingModel(accountId: seedId,
+                                                                                               readAt: readTime,
+                                                                                               value: 1) }))
             {
                 var context = builder.Build();
 
@@ -74,7 +74,8 @@ namespace Data.Tests
                                 .WithInnerException<SqliteException>()
                                 .Where(e => e.SqliteErrorCode == SQLITE_CONSTRAINT
                                         && e.Message.Contains("UNIQUE")
-                                        && e.Message.Contains(nameof(ReadingModel.ReadAt)));
+                                        && e.Message.Contains(nameof(ReadingModel.ReadAt))
+                                        && e.Message.Contains(nameof(ReadingModel.AccountId)));
             }
         }
 
@@ -84,7 +85,7 @@ namespace Data.Tests
             int existing = 123;
 
             using (var builder = new MeterDBContextBuilder()
-                                    .AccountSeeds(new List<AccountModel> { new AccountModel(accountId: existing) }))
+                                       .AccountSeeds(new List<AccountModel> { new AccountModel(accountId: existing) }))
             {
                 var context = builder.Build();
 

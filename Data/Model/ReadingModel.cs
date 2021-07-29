@@ -26,9 +26,15 @@ namespace Data.Model
         public static void Configure(ModelBuilder builder)
         {
             builder.Entity<ReadingModel>(
-                e => e.HasOne(read => read.Account)
-                      .WithMany(acc => acc.Readings)
-                );
+                e =>
+                {
+                    e.HasOne(read => read.Account)
+                          .WithMany(acc => acc.Readings);
+
+                    e.HasIndex(e => new { e.AccountId, e.ReadAt })
+                     .IsUnique();
+                }
+            );
         }
     }
 }
