@@ -16,6 +16,54 @@ namespace Data.Tests
 {
     public class MeterReadingTests
     {
+        #region AccountIdIsValid
+
+        [Fact]
+        public void AccountId_Valid_WhenAccountExists()
+        {
+            int testId = 123;
+
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) }))
+            {
+                var context = (IMeterDBContext)builder.Build();
+
+                context.Accounts.Count().Should().Be(1);
+                context.Accounts.First().AccountId.Should().Be(testId);
+
+                var sut = new MeterReading
+                {
+                    AccountId = testId.ToString(),
+                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                    ReadValue = 0.ToString("00000")
+                };
+
+                sut.AccountIdIsValid(context).Should().BeTrue();
+            }
+        }
+
+
+        [Fact]
+        public void AccountId_Invalid_WhenAccountMising()
+        {
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new[] { new AccountModel(accountId: 123) }))
+            {
+                var context = (IMeterDBContext)builder.Build();
+
+                context.Accounts.Count().Should().NotBe(0);
+
+                var sut = new MeterReading
+                {
+                    AccountId = "1234",
+                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                    ReadValue = 0.ToString("00000")
+                };
+
+                sut.AccountIdIsValid(context).Should().BeFalse();
+            }
+        }
+
         [Fact]
         public void AccountId_Invalid_WhenAccountsEmpty()
         {
@@ -63,5 +111,6 @@ namespace Data.Tests
             }
         }
 
+        #endregion
     }
 }
