@@ -46,6 +46,66 @@ namespace Data.Tests
         }
 
         [Fact]
+        public void SameReadAt_DifferentAccountId_Allowed()
+        {
+            int seedId = 123;
+            var readTime = DateTime.UtcNow;
+            var firstAccount = new AccountModel(accountId: seedId);
+            var secondAccount = new AccountModel(accountId: seedId + 1);
+
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new List<AccountModel> { firstAccount, secondAccount })
+                                       .ReadingSeeds(new List<ReadingModel> { new ReadingModel(accountId: seedId + 1,
+                                                                                               readAt: readTime,
+                                                                                               value: 1) }))
+            {
+                var context = builder.Build();
+
+                // confirm DB seeded as expected
+                context.Accounts.Count().Should().Be(2);
+                firstAccount.Readings.Should().BeNullOrEmpty();
+                secondAccount.Readings.Count.Should().Be(1);
+
+                context.Readings.Add(new ReadingModel(accountId: seedId,
+                                                      readAt: readTime,
+                                                      value: 1));
+
+                context.SaveChanges();
+
+                firstAccount.Readings.Count().Should().Be(1);
+            }
+        }
+
+        [Fact]
+        public void SameAccountId_DifferentReadAt_Allowed()
+        {
+            int seedId = 123;
+            var readTime = DateTime.UtcNow;
+            var seedAccount = new AccountModel(accountId: seedId);
+
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new List<AccountModel> { seedAccount })
+                                       .ReadingSeeds(new List<ReadingModel> { new ReadingModel(accountId: seedId,
+                                                                                               readAt: readTime.Add(new TimeSpan(-5000)),
+                                                                                               value: 1) }))
+            {
+                var context = builder.Build();
+
+                // confirm DB seeded as expected
+                context.Accounts.FirstOrDefault().Should().Be(seedAccount);
+                seedAccount.Readings.Count.Should().Be(1);
+
+                context.Readings.Add(new ReadingModel(accountId: seedId,
+                                                      readAt: readTime,
+                                                      value: 1));
+
+                context.SaveChanges();
+
+                seedAccount.Readings.Count().Should().Be(2);
+            }
+        }
+
+        [Fact]
         public void AccountId_ReadAt_IsUnique()
         {
             int seedId = 123;
