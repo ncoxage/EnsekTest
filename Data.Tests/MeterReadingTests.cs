@@ -16,10 +16,69 @@ namespace Data.Tests
 {
     public class MeterReadingTests
     {
+        #region ReadValueIsValid
+
+        [Theory]
+        [InlineData("00000")]
+        [InlineData("12345")]
+        [InlineData("99999")]
+        public void ReadValueIsValid_True_WhenCorrectFormat(string value)
+        {
+            int testId = 123;
+
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) }))
+            {
+                var context = (IMeterDBContext)builder.Build();
+
+                var sut = new MeterReading
+                {
+                    AccountId = testId.ToString(),
+                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                    ReadValue = value
+                };
+
+                sut.ReadValueIsValid().Should().BeTrue();
+            }
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("NotANumber")]
+        [InlineData("NotAN")]
+        [InlineData("123")]
+        [InlineData("0x123")]
+        [InlineData("123.7")]
+        [InlineData("-2600")]
+        public void ReadValueIsValid_False_WhenNotCorrectFormat(string value)
+        {
+            int testId = 123;
+
+            using (var builder = new MeterDBContextBuilder()
+                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) }))
+            {
+                var context = (IMeterDBContext)builder.Build();
+
+                var sut = new MeterReading
+                {
+                    AccountId = testId.ToString(),
+                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                    ReadValue = value
+                };
+
+                sut.ReadValueIsValid().Should().BeFalse();
+            }
+        }
+
+
+
+        #endregion
+
         #region AccountIdIsValid
 
         [Fact]
-        public void AccountId_Valid_WhenAccountExists()
+        public void AccountIdIsValid_True_WhenAccountExists()
         {
             int testId = 123;
 
@@ -44,7 +103,7 @@ namespace Data.Tests
 
 
         [Fact]
-        public void AccountId_Invalid_WhenAccountMising()
+        public void AccountIdIsValid_False_WhenAccountMising()
         {
             using (var builder = new MeterDBContextBuilder()
                                        .AccountSeeds(new[] { new AccountModel(accountId: 123) }))
@@ -65,7 +124,7 @@ namespace Data.Tests
         }
 
         [Fact]
-        public void AccountId_Invalid_WhenAccountsEmpty()
+        public void AccountIdIsValid_False_WhenAccountsEmpty()
         {
 
             using (var builder = new MeterDBContextBuilder())
@@ -85,11 +144,12 @@ namespace Data.Tests
 
         [Theory]
         [InlineData(null)]
+        [InlineData("")]
         [InlineData("NotANumber")]
         [InlineData("0x123")]
         [InlineData("123.7")]
         [InlineData("-26")]
-        public void AccountId_Invalid_WhenNotPureInt(string accountId)
+        public void AccountIdIsValid_False_WhenNotPureInt(string accountId)
         {
             int testId = 0;
 

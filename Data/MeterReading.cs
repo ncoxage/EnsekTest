@@ -24,7 +24,8 @@ namespace Data
             {
                 int accountId = 0;
 
-                if(Int32.TryParse(AccountId, NumberStyles.Number, null, out accountId) && accountId > 0)
+                if(Int32.TryParse(AccountId, NumberStyles.Number, null, out accountId) 
+                    && accountId > 0)
                 {
                     isValid = context.Accounts.FirstOrDefault(acc => acc.AccountId == accountId) != null;
                 }
@@ -35,6 +36,26 @@ namespace Data
             }
 
             return isValid;
+        }
+
+        internal bool ReadValueIsValid()
+        {
+            bool isValid = false;
+
+            try
+            {
+                int value = 0;
+
+                isValid = ReadValue.Length == 5 
+                            && ReadValue.All(char.IsDigit);
+            }
+            catch
+            {
+                // should add debug logging
+            }
+
+            return isValid;
+
         }
     }
 }
