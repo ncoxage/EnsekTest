@@ -16,6 +16,25 @@ namespace Data.Tests
 {
     public class MeterReadingTests
     {
+        [Fact]
+        public void AccountId_Invalid_WhenAccountsEmpty()
+        {
+
+            using (var builder = new MeterDBContextBuilder())
+            {
+                var context = (IMeterDBContext)builder.Build();
+
+                var sut = new MeterReading
+                {
+                    AccountId = "123",
+                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                    ReadValue = 0.ToString("00000")
+                };
+
+                sut.AccountIdIsValid(context).Should().BeFalse();
+            }
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("NotANumber")]
