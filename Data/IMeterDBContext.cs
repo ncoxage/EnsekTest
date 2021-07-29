@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    interface IMeterDBContext
+    public interface IMeterDBContext
     {
         DbSet<AccountModel> Accounts { get; }
         DbSet<ReadingModel> Readings { get; }

@@ -16,6 +16,47 @@ namespace Data.Tests
 {
     public class MeterReadingTests
     {
+        #region ReadAtIsValid
+
+        [Theory]
+        [InlineData("24/12/2020 12:00")]
+        [InlineData("30/04/2021 12:00")]
+        [InlineData("29/02/2020 12:00")]
+        public void ReadAtIsValid_True_WhenCorrectFormat(string readAt)
+        {
+           var sut = new MeterReading
+            {
+                AccountId = "123",
+                ReadAt = readAt,
+                ReadValue = 0.ToString("00000")
+            };
+
+            sut.ReadAtIsValid().Should().BeFalse();
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("NotARealDate 001")]
+        [InlineData("24/12/2020")]
+        [InlineData("24/12/2020 12:00:34")]
+        [InlineData("31/04/2021 12:00")]
+        [InlineData("29/02/2021 12:00")]
+        public void ReadAtIsValid_False_WhenNotCorrectFormat(string readAt)
+        {
+
+            var sut = new MeterReading
+            {
+                AccountId = "123",
+                ReadAt = readAt,
+                ReadValue = 0.ToString("00000")
+            };
+
+            sut.ReadAtIsValid().Should().BeFalse();
+        }
+
+        #endregion
+
         #region ReadValueIsValid
 
         [Theory]
@@ -24,22 +65,14 @@ namespace Data.Tests
         [InlineData("99999")]
         public void ReadValueIsValid_True_WhenCorrectFormat(string value)
         {
-            int testId = 123;
-
-            using (var builder = new MeterDBContextBuilder()
-                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) }))
+            var sut = new MeterReading
             {
-                var context = (IMeterDBContext)builder.Build();
+                AccountId = "123",
+                ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                ReadValue = value
+            };
 
-                var sut = new MeterReading
-                {
-                    AccountId = testId.ToString(),
-                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
-                    ReadValue = value
-                };
-
-                sut.ReadValueIsValid().Should().BeTrue();
-            }
+            sut.ReadValueIsValid().Should().BeTrue();
         }
 
         [Theory]
@@ -53,22 +86,14 @@ namespace Data.Tests
         [InlineData("-2600")]
         public void ReadValueIsValid_False_WhenNotCorrectFormat(string value)
         {
-            int testId = 123;
-
-            using (var builder = new MeterDBContextBuilder()
-                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) }))
+            var sut = new MeterReading
             {
-                var context = (IMeterDBContext)builder.Build();
+                AccountId = "123",
+                ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                ReadValue = value
+            };
 
-                var sut = new MeterReading
-                {
-                    AccountId = testId.ToString(),
-                    ReadAt = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
-                    ReadValue = value
-                };
-
-                sut.ReadValueIsValid().Should().BeFalse();
-            }
+            sut.ReadValueIsValid().Should().BeFalse();
         }
 
 
@@ -155,6 +180,7 @@ namespace Data.Tests
 
             Int32.TryParse(accountId, out testId);
 
+            //  use MeterDBContext/AccountModel instance to ensure it's absence is not the cause of the false returns
             using (var builder = new MeterDBContextBuilder()
                                        .AccountSeeds(new[] { new AccountModel(accountId: testId) }))
             {
