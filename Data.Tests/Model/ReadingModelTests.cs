@@ -163,7 +163,7 @@ namespace Data.Tests
         }
 
         [Fact]
-        public void ctor_PropertiesInitialiedCorrectly()
+        public void ctor_PropertiesInitialisedCorrectly()
         {
             int id = 123;
             DateTime readAt = DateTime.UtcNow;
