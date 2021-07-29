@@ -84,6 +84,7 @@ namespace Data
             try
             {
                 DateTime.ParseExact(ReadAt, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                return true;
             }
             catch
             {

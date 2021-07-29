@@ -26,18 +26,17 @@ namespace Data.Tests
         {
             int testId = 123;
             var testReading = new ReadingModel(accountId: testId,
-                                               readAt: DateTime.UtcNow,
+                                               readAt: Convert.ToDateTime(makeReadAt(DateTime.UtcNow)),
                                                value: 0);
             var seedAccount = new AccountModel(accountId: testId);
 
             using (var builder = new MeterDBContextBuilder()
-                                       .AccountSeeds(new[] { seedAccount })
-                                       .ReadingSeeds(new[] { testReading }))
+                                       .AccountSeeds(new[] { seedAccount }))
             {
                 var context = builder.Build();
 
                 context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
-                context.Readings.Count().Should().Be(1);
+                context.Readings.Count().Should().Be(0);
 
                 var input = (new List<MeterReading> { new MeterReading { AccountId = testReading.AccountId.ToString(),
                                                                          ReadAt = makeReadAt(testReading.ReadAt),
@@ -45,7 +44,7 @@ namespace Data.Tests
                             .GetEnumerator();
                 input.MoveNext();
 
-                MeterReading.LoadReading(input, context).Should().BeFalse();
+                MeterReading.LoadReading(input, context).Should().BeTrue();
 
                 context.Readings.Count().Should().Be(1);
 
@@ -56,11 +55,11 @@ namespace Data.Tests
         }
 
         [Fact]
-        public void LoadReading_False_WhenDupliactReading()
+        public void LoadReading_False_WhenDuplicateReading()
         {
             int testId = 123;
             var seedReading = new ReadingModel(accountId: testId,
-                                               readAt: DateTime.UtcNow,
+                                               readAt: Convert.ToDateTime(makeReadAt(DateTime.UtcNow)),
                                                value: 0);
 
             using (var builder = new MeterDBContextBuilder()
@@ -176,7 +175,7 @@ namespace Data.Tests
                 ReadValue = makeReadValue(0)
             };
 
-            sut.ReadAtIsValid().Should().BeFalse();
+            sut.ReadAtIsValid().Should().BeTrue();
         }
 
         [Theory]
