@@ -25,28 +25,33 @@ namespace Data.Tests
         public void LoadReading_True_WhenReadingValid()
         {
             int testId = 123;
-            var seedReading = new ReadingModel(accountId: testId,
+            var testReading = new ReadingModel(accountId: testId,
                                                readAt: DateTime.UtcNow,
                                                value: 0);
+            var seedAccount = new AccountModel(accountId: testId);
 
             using (var builder = new MeterDBContextBuilder()
-                                       .AccountSeeds(new[] { new AccountModel(accountId: testId) })
-                                       .ReadingSeeds(new[] { seedReading }))
+                                       .AccountSeeds(new[] { seedAccount })
+                                       .ReadingSeeds(new[] { testReading }))
             {
                 var context = builder.Build();
 
                 context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
                 context.Readings.Count().Should().Be(1);
 
-                var input = (new List<MeterReading> { new MeterReading { AccountId = seedReading.AccountId.ToString(),
-                                                                         ReadAt = makeReadAt(seedReading.ReadAt),
-                                                                         ReadValue = makeReadValue(seedReading.Value)} })
+                var input = (new List<MeterReading> { new MeterReading { AccountId = testReading.AccountId.ToString(),
+                                                                         ReadAt = makeReadAt(testReading.ReadAt),
+                                                                         ReadValue = makeReadValue(testReading.Value)} })
                             .GetEnumerator();
                 input.MoveNext();
 
                 MeterReading.LoadReading(input, context).Should().BeFalse();
 
                 context.Readings.Count().Should().Be(1);
+
+                var actual = seedAccount.Readings.First();
+                actual.ReadAt.Should().Be(testReading.ReadAt);
+                actual.Value.Should().Be(testReading.Value);
             }
         }
 
