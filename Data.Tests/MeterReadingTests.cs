@@ -38,13 +38,14 @@ namespace Data.Tests
                 context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
                 context.Readings.Count().Should().Be(0);
 
-                var input = (new List<MeterReading> { new MeterReading { AccountId = testReading.AccountId.ToString(),
-                                                                         ReadAt = makeReadAt(testReading.ReadAt),
-                                                                         ReadValue = makeReadValue(testReading.Value)} })
-                            .GetEnumerator();
-                input.MoveNext();
+                var sut = new MeterReading
+                {
+                    AccountId = testReading.AccountId.ToString(),
+                    ReadAt = makeReadAt(testReading.ReadAt),
+                    ReadValue = makeReadValue(testReading.Value)
+                };
 
-                MeterReading.LoadReading(input, context).Should().BeTrue();
+                sut.LoadReading(context).Should().BeTrue();
 
                 context.Readings.Count().Should().Be(1);
 
@@ -71,13 +72,14 @@ namespace Data.Tests
                 context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
                 context.Readings.Count().Should().Be(1);
 
-                var input = (new List<MeterReading> { new MeterReading { AccountId = seedReading.AccountId.ToString(),
-                                                                         ReadAt = makeReadAt(seedReading.ReadAt),
-                                                                         ReadValue = makeReadValue(seedReading.Value)} })
-                            .GetEnumerator();
-                input.MoveNext();
+                var sut = new MeterReading
+                {
+                    AccountId = seedReading.AccountId.ToString(),
+                    ReadAt = makeReadAt(seedReading.ReadAt),
+                    ReadValue = makeReadValue(seedReading.Value)
+                };
 
-                MeterReading.LoadReading(input, context).Should().BeFalse();
+                sut.LoadReading(context).Should().BeFalse();
 
                 context.Readings.Count().Should().Be(1);
             }
@@ -96,13 +98,14 @@ namespace Data.Tests
                 context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
                 context.Readings.Count().Should().Be(0);
 
-                var input = (new List<MeterReading> { new MeterReading { AccountId = (testId + 1).ToString(),
-                                                                         ReadAt = makeReadAt(DateTime.UtcNow),
-                                                                         ReadValue = "0"} })
-                            .GetEnumerator();
-                input.MoveNext();
+                var sut = new MeterReading
+                {
+                    AccountId = (testId + 1).ToString(),
+                    ReadAt = makeReadAt(DateTime.UtcNow),
+                    ReadValue = "0"
+                };
 
-                MeterReading.LoadReading(input, context).Should().BeFalse();
+                sut.LoadReading(context).Should().BeFalse();
 
                 context.Readings.Count().Should().Be(0);
             }
@@ -121,13 +124,14 @@ namespace Data.Tests
                 context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
                 context.Readings.Count().Should().Be(0);
 
-                var input = (new List<MeterReading> { new MeterReading { AccountId = testId.ToString(),
-                                                                         ReadAt = string.Empty,
-                                                                         ReadValue = makeReadValue(0)} })
-                            .GetEnumerator();
-                input.MoveNext();
+                var sut = new MeterReading
+                {
+                    AccountId = testId.ToString(),
+                    ReadAt = string.Empty,
+                    ReadValue = makeReadValue(0)
+                };
 
-                MeterReading.LoadReading(input, context).Should().BeFalse();
+                sut.LoadReading(context).Should().BeFalse();
 
                 context.Readings.Count().Should().Be(0);
             }
@@ -146,14 +150,15 @@ namespace Data.Tests
                 context.Accounts.FirstOrDefault().AccountId.Should().Be(testId);
                 context.Readings.Count().Should().Be(0);
 
-                var input = (new List<MeterReading> { new MeterReading { AccountId = (testId + 1).ToString(),
-                                                                         ReadAt = makeReadAt(DateTime.UtcNow),
-                                                                         ReadValue = makeReadValue(0)} })
-                            .GetEnumerator();
-                input.MoveNext();
+                var sut = new MeterReading
+                {
+                    AccountId = (testId + 1).ToString(),
+                    ReadAt = makeReadAt(DateTime.UtcNow),
+                    ReadValue = makeReadValue(0)
+                };
 
-                MeterReading.LoadReading(input, context).Should().BeFalse();
-              
+                sut.LoadReading(context).Should().BeFalse();
+
                 context.Readings.Count().Should().Be(0);
             }
         }

@@ -19,7 +19,7 @@ namespace Data
 
         public int Loaded { get => LoadedReadings.Count; }
 
-        public int Rejected { get => RejectedReadings.Count;  }
+        public int Rejected { get => RejectedReadings.Count; }
     }
 
     public class MeterReading
@@ -63,8 +63,6 @@ namespace Data
 
             try
             {
-                int value = 0;
-
                 isValid = ReadValue.Length == 5
                             && ReadValue.All(char.IsDigit);
             }
@@ -94,17 +92,15 @@ namespace Data
             return isValid;
         }
 
-        public static bool LoadReading(IEnumerator<MeterReading> enumerator, IMeterDBContext context)
+        public bool LoadReading(IMeterDBContext context)
         {
-            var reading = enumerator.Current;
-
             try
             {
-                if (reading.IsValid(context))
+                if (IsValid(context))
                 {
-                    context.Readings.Add(new ReadingModel(accountId: Convert.ToInt32(reading.AccountId),
-                                                          readAt: Convert.ToDateTime(reading.ReadAt),
-                                                          value: Convert.ToInt32(reading.ReadValue)));
+                    context.Readings.Add(new ReadingModel(accountId: Convert.ToInt32(AccountId),
+                                                          readAt: Convert.ToDateTime(ReadAt),
+                                                          value: Convert.ToInt32(ReadValue)));
 
                     context.SaveChanges();
 
