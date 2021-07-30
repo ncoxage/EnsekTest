@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    interface IReadingsLoadResults
+    public interface IReadingsLoadResults
     {
-        public List<IMeterReading> Loaded { get; } 
-        public List<IMeterReading> Rejected { get; }
+        public int Loaded { get; } 
+        public int Rejected { get; }
     }
 }

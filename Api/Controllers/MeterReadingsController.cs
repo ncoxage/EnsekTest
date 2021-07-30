@@ -1,31 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+
+using CsvHelper;
+
+using Data;
+
+using System.IO;
+using System.Globalization;
+using CsvHelper.Configuration;
+using Microsoft.AspNetCore.Http;
 
 namespace Api.Controllers
 {
-    public struct LoadReturn
-    {
-        public int Loaded { get; }
-        public int Rejected { get; }
-
-        public LoadReturn(int loaded, int rejected)
-        {
-            Loaded = loaded;
-            Rejected = rejected;
-        }
-    }
     [ApiController]
     [Route("meter-reading-uploads")]
     public class MeterReadingsController
     {
-        [HttpPost]
-        public async Task<LoadReturn> Post(string readings)
+        IMeterDBContext DbContext { get; }
+        IReadingMaker ReadingMaker { get; }
+        ILogger Logger;
+
+        public MeterReadingsController(IMeterDBContext dbContext, IReadingMaker readingMaker, ILogger<MeterReadingsController> logger)
         {
-            return new LoadReturn(0, 0);
+            DbContext = dbContext;
+            ReadingMaker = readingMaker;
+            Logger = logger;
         }
+
+        [HttpPost]
+        public async Task<IReadingsLoadResults> Post(IFormFile file)
+        {
+            return await this.ReadingMaker.LoadReadings(file, DbContext);
+        }
+
     }
 }

@@ -8,9 +8,9 @@ namespace Data
 {
     public interface IMeterReading
     {
-        string AccountId { get;  }
-        string ReadAt { get;  }
-        string ReadValue { get;  }
+        string AccountId { get; set; }
+        string ReadAt { get; set;  }
+        string ReadValue { get; set; }
 
         bool IsValid(IMeterDBContext context);
         Task<bool> LoadReading(IMeterDBContext context);
