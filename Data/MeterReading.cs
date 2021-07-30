@@ -81,17 +81,17 @@ namespace Data
             return isValid;
         }
 
-        public bool LoadReading(IMeterDBContext context)
+        public async Task<bool> LoadReading(IMeterDBContext context)
         {
             try
             {
                 if (IsValid(context))
                 {
-                    context.Readings.Add(new ReadingModel(accountId: Convert.ToInt32(AccountId),
-                                                          readAt: Convert.ToDateTime(ReadAt),
-                                                          value: Convert.ToInt32(ReadValue)));
+                    await context.Readings.AddAsync(new ReadingModel(accountId: Convert.ToInt32(AccountId),
+                                                                     readAt: Convert.ToDateTime(ReadAt),
+                                                                     value: Convert.ToInt32(ReadValue)));
 
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
 
                     return true;
                 }

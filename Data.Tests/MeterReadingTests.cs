@@ -21,7 +21,7 @@ namespace Data.Tests
         #region LoadReading
 
         [Fact]
-        public void LoadReading_True_WhenReadingValid()
+        public async void LoadReading_True_WhenReadingValid()
         {
             int testId = 123;
             var testReading = new ReadingModel(accountId: testId,
@@ -44,7 +44,7 @@ namespace Data.Tests
                     ReadValue = makeReadValue(testReading.Value)
                 };
 
-                sut.LoadReading(context).Should().BeTrue();
+                (await sut.LoadReading(context)).Should().BeTrue();
 
                 context.Readings.Count().Should().Be(1);
 
@@ -55,7 +55,7 @@ namespace Data.Tests
         }
 
         [Fact]
-        public void LoadReading_False_WhenDuplicateReading()
+        public async void LoadReading_False_WhenDuplicateReading()
         {
             int testId = 123;
             var seedReading = new ReadingModel(accountId: testId,
@@ -78,14 +78,14 @@ namespace Data.Tests
                     ReadValue = makeReadValue(seedReading.Value)
                 };
 
-                sut.LoadReading(context).Should().BeFalse();
+                (await sut.LoadReading(context)).Should().BeFalse();
 
                 context.Readings.Count().Should().Be(1);
             }
         }
 
         [Fact]
-        public void LoadReading_False_WhenReadValueInvalid()
+        public async void LoadReading_False_WhenReadValueInvalid()
         {
             int testId = 123;
 
@@ -104,14 +104,14 @@ namespace Data.Tests
                     ReadValue = "0"
                 };
 
-                sut.LoadReading(context).Should().BeFalse();
+                (await sut.LoadReading(context)).Should().BeFalse();
 
                 context.Readings.Count().Should().Be(0);
             }
         }
 
         [Fact]
-        public void LoadReading_False_WhenReadAtInvalid()
+        public async void LoadReading_False_WhenReadAtInvalid()
         {
             int testId = 123;
 
@@ -130,14 +130,14 @@ namespace Data.Tests
                     ReadValue = makeReadValue(0)
                 };
 
-                sut.LoadReading(context).Should().BeFalse();
+                (await sut.LoadReading(context)).Should().BeFalse();
 
                 context.Readings.Count().Should().Be(0);
             }
         }
 
         [Fact]
-        public void LoadReading_False_WhenAccountMissing()
+        public async void LoadReading_False_WhenAccountMissing()
         {
             int testId = 123;
 
@@ -156,7 +156,7 @@ namespace Data.Tests
                     ReadValue = makeReadValue(0)
                 };
 
-                sut.LoadReading(context).Should().BeFalse();
+                (await sut.LoadReading(context)).Should().BeFalse();
 
                 context.Readings.Count().Should().Be(0);
             }

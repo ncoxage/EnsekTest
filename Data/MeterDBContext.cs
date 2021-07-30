@@ -49,7 +49,7 @@ namespace Data
                 var setType = set.PropertyType.GenericTypeArguments[0];
 
                 var entity = entityMethod.MakeGenericMethod(new Type[] { setType });
-                entity.Invoke(modelBuilder, new object[] { });
+                entity.Invoke(modelBuilder, Array.Empty<object>());
 
                 var configure = setType.GetMethod("Configure", new Type[] { typeof(ModelBuilder) });
 

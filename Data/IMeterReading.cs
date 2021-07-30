@@ -13,6 +13,6 @@ namespace Data
         string ReadValue { get;  }
 
         bool IsValid(IMeterDBContext context);
-        bool LoadReading(IMeterDBContext context);
+        Task<bool> LoadReading(IMeterDBContext context);
     }
 }
