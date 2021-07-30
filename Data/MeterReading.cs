@@ -41,9 +41,8 @@ namespace Data
 
             try
             {
-                int accountId = 0;
 
-                if (Int32.TryParse(AccountId, NumberStyles.Number, null, out accountId)
+                if (Int32.TryParse(AccountId, NumberStyles.Number, null, out int accountId)
                     && accountId > 0)
                 {
                     isValid = context.Accounts.FirstOrDefault(acc => acc.AccountId == accountId) != null;

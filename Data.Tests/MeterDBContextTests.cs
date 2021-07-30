@@ -23,7 +23,9 @@ namespace Data.Tests
         const string CONFIG_MSG = "Configure called";
         class DummySet
         {
+#pragma warning disable IDE0060 // Remove unused parameter
             public static void Configure(ModelBuilder builder)
+#pragma warning restore IDE0060 // Remove unused parameter
             {
                 throw new ApplicationException(CONFIG_MSG);
             }
@@ -36,7 +38,7 @@ namespace Data.Tests
 
             }
 
-            public DbSet<DummySet> dummy { get => this.Set<DummySet>(); }
+            public DbSet<DummySet> Dummy { get => this.Set<DummySet>(); }
         }
 
         /// <summary>

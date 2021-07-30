@@ -17,7 +17,7 @@ namespace Data.Tests
 {
     public class ReadingModelTests
     {
-        public static int SQLITE_CONSTRAINT = 19;
+        public static readonly int SQLITE_CONSTRAINT = 19;
 
         [Fact]
         public void AccountId_NavigatesToAccount()
@@ -69,7 +69,7 @@ namespace Data.Tests
 
                 context.SaveChanges();
 
-                firstAccount.Readings.Count().Should().Be(1);
+                firstAccount.Readings.Count.Should().Be(1);
             }
         }
 
@@ -98,7 +98,7 @@ namespace Data.Tests
 
                 context.SaveChanges();
 
-                seedAccount.Readings.Count().Should().Be(2);
+                seedAccount.Readings.Count.Should().Be(2);
             }
         }
 
@@ -160,7 +160,7 @@ namespace Data.Tests
         }
 
         [Fact]
-        public void ctor_PropertiesInitialisedCorrectly()
+        public void Ctor_PropertiesInitialisedCorrectly()
         {
             int id = 123;
             DateTime readAt = DateTime.UtcNow;

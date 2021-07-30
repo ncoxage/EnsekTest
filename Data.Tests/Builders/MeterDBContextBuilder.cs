@@ -19,7 +19,9 @@ namespace Data.Tests.Builders
     {
         private bool disposedValue;
 
+#pragma warning disable IDE1006 // Naming Styles
         private DbContextOptions<MeterDBContext> _contextOptions { get; }
+#pragma warning restore IDE1006 // Naming Styles
         private MeterDBContext _context { get; set; }
 
         private List<AccountModel> _accountsSeed { get; set; }

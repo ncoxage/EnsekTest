@@ -16,8 +16,8 @@ namespace Data.Tests
 {
     public class MeterReadingTests
     {
-        static Func<int, string> makeReadValue = (readValue) => readValue.ToString("00000");
-        static Func<DateTime, string> makeReadAt = (readAt) => readAt.ToString("dd/MM/yyyy HH:mm");
+        static readonly Func<int, string> makeReadValue = (readValue) => readValue.ToString("00000");
+        static readonly Func<DateTime, string> makeReadAt = (readAt) => readAt.ToString("dd/MM/yyyy HH:mm");
 
         #region LoadReading
 
@@ -325,9 +325,10 @@ namespace Data.Tests
         [InlineData("-26")]
         public void AccountIdIsValid_False_WhenNotPureInt(string accountId)
         {
-            int testId = 0;
 
-            Int32.TryParse(accountId, out testId);
+#pragma warning disable CA1806 // Do not ignore method results
+            Int32.TryParse(accountId, out int testId);
+#pragma warning restore CA1806 // Do not ignore method results
 
             //  use MeterDBContext/AccountModel instance to ensure it's absence is not the cause of the false returns
             using (var builder = new MeterDBContextBuilder()
