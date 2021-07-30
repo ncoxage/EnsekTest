@@ -12,17 +12,7 @@ using Data.Model;
 [assembly: InternalsVisibleToAttribute("Data.Tests")]
 namespace Data
 {
-    public class ReadingsLoadResults
-    {
-        public List<ReadingModel> LoadedReadings { get; } = new List<ReadingModel>();
-        public List<ReadingModel> RejectedReadings { get; } = new List<ReadingModel>();
-
-        public int Loaded { get => LoadedReadings.Count; }
-
-        public int Rejected { get => RejectedReadings.Count; }
-    }
-
-    public class MeterReading
+    public class MeterReading : IMeterReading
     {
         public string AccountId { get; set; }
         public string ReadAt { get; set; }

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using FluentAssertions;
 using Xunit;
 
 using Data.Model;
+
+using static Data.Globals;
 
 using Data.Tests.Builders;
 
@@ -17,7 +16,7 @@ namespace Data.Tests
     public class MeterReadingTests
     {
         static readonly Func<int, string> makeReadValue = (readValue) => readValue.ToString("00000");
-        static readonly Func<DateTime, string> makeReadAt = (readAt) => readAt.ToString("dd/MM/yyyy HH:mm");
+        static readonly Func<DateTime, string> makeReadAt = (readAt) => readAt.ToString(READAT_FORMAT);
 
         #region LoadReading
 
