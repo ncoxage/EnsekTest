@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-using CsvHelper;
-
 using Data;
 
-using System.IO;
-using System.Globalization;
-using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Http;
 
 namespace Api.Controllers
@@ -36,7 +28,15 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<IReadingsLoadResults> Post(IFormFile file)
         {
-            return await this.ReadingMaker.LoadReadings(file, DbContext);
+            try
+            {
+                return await this.ReadingMaker.LoadReadings(file, DbContext);
+            }
+            catch(Exception e)
+            {
+                Logger.LogError($"{this.GetType().Name}.{nameof(Post)} - Error loading meter readings\n{e.Message}");
+                throw;
+            }
         }
 
     }
