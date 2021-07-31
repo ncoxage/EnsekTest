@@ -15,10 +15,10 @@ namespace Api.Controllers
     public class MeterReadingsController
     {
         IMeterDBContext DbContext { get; }
-        IReadingMaker ReadingMaker { get; }
+        IReadingsLoader ReadingMaker { get; }
         ILogger Logger { get; }
 
-        public MeterReadingsController(IMeterDBContext dbContext, IReadingMaker readingMaker, ILogger<MeterReadingsController> logger)
+        public MeterReadingsController(IMeterDBContext dbContext, IReadingsLoader readingMaker, ILogger<MeterReadingsController> logger)
         {
             DbContext = dbContext;
             ReadingMaker = readingMaker;
@@ -30,7 +30,7 @@ namespace Api.Controllers
         {
             try
             {
-                return await this.ReadingMaker.LoadReadings(file, DbContext);
+                return await this.ReadingMaker.LoadToDb(file, DbContext);
             }
             catch(Exception e)
             {

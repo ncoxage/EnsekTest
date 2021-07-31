@@ -38,7 +38,7 @@ namespace Api
             });
 
             services.AddDbContext<IMeterDBContext, MeterDBContext>(opt => opt.UseSqlite("Data Source=../MeterReadings.db"));
-            services.AddScoped<IReadingMaker, ReadingMaker>();
+            services.AddScoped<IReadingsLoader, ReadingsLoader>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

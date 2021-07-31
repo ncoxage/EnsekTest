@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Data
 {
-    public interface IReadingMaker
+    public interface IReadingsLoader
     {
-        Task<IReadingsLoadResults> LoadReadings(IFormFile file, IMeterDBContext dbContext);
+        Task<IReadingsLoadResults> LoadToDb(IFormFile file, IMeterDBContext dbContext);
     }
 }

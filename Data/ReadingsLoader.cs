@@ -17,9 +17,9 @@ namespace Data
 
     }
 
-    public class ReadingMaker : IReadingMaker
+    public class ReadingsLoader : IReadingsLoader
     {
-        public async Task<IReadingsLoadResults> LoadReadings(IFormFile file, IMeterDBContext dbContext)
+        public async Task<IReadingsLoadResults> LoadToDb(IFormFile file, IMeterDBContext dbContext)
         {
             var result = new LoadResults();
             
