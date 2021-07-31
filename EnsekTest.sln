@@ -6,14 +6,16 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E2A3B32-8370-42F4-8EEB-544C39F093A9}"
 	ProjectSection(SolutionItems) = preProject
 		SoftwareEngineerExercise\BRIEF.pdf = SoftwareEngineerExercise\BRIEF.pdf
+		SoftwareEngineerExercise\Meter_Reading.csv = SoftwareEngineerExercise\Meter_Reading.csv
 		README.md = README.md
+		SoftwareEngineerExercise\Test_Accounts.csv = SoftwareEngineerExercise\Test_Accounts.csv
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{C1FE2DA9-68DB-4DE0-AF0B-CA6017D4DE5D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Tests", "Data.Tests\Data.Tests.csproj", "{953F0AA0-42C5-4944-872A-9966F9E1A378}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{4F973EE6-FB72-49AB-A6DC-2931B379077D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{4F973EE6-FB72-49AB-A6DC-2931B379077D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
