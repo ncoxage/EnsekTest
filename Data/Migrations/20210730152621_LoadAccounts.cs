@@ -2,11 +2,9 @@
 using System.IO;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 using CsvHelper;
-using CsvHelper.Configuration;
 
 using Data.Model;
 using System;
