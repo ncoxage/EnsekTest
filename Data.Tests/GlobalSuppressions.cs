@@ -5,8 +5,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member", Target = "~P:Data.Tests.Builders.MeterDBContextBuilder._context")]
-[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member", Target = "~P:Data.Tests.Builders.MeterDBContextBuilder._readingsSeed")]
+[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "I'm a bit 'Old School' in this regard", Scope = "module")]
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "Prefer layout offered by curlies", Scope = "module")]
-[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member", Target = "~P:Data.Tests.Builders.MeterDBContextBuilder._accountsSeed")]
-[assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "<Pending>", Scope = "member", Target = "~M:Data.Tests.MeterDBContextTests.DummySet.Configure(Microsoft.EntityFrameworkCore.ModelBuilder)")]
+[assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Don't really understand why this one's required.", Scope = "member", Target = "~M:Data.Tests.MeterDBContextTests.DummySet.Configure(Microsoft.EntityFrameworkCore.ModelBuilder)")]
