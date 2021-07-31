@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 using Data;
+using static Data.Globals;
 
 namespace Api
 {
@@ -32,7 +30,7 @@ namespace Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
             });
 
-            services.AddDbContext<IMeterDBContext, MeterDBContext>(opt => opt.UseSqlite("Data Source=../MeterReadings.db"));
+            services.AddDbContext<IMeterDBContext, MeterDBContext>(opt => opt.UseSqlite($"Data Source={Configuration.GetValue(DB_FILE_KEY, DB_FILE_DEFAULT)}"));
             services.AddScoped<IReadingsLoader, ReadingsLoader>();
         }
 
