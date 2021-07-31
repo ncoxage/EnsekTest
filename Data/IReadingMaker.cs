@@ -10,7 +10,6 @@ namespace Data
 {
     public interface IReadingMaker
     {
-        IMeterReading NewReading(string accountId, string readAt, string value);
         Task<IReadingsLoadResults> LoadReadings(IFormFile file, IMeterDBContext dbContext);
     }
 }

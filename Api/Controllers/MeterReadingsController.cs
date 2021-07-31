@@ -16,7 +16,7 @@ namespace Api.Controllers
     {
         IMeterDBContext DbContext { get; }
         IReadingMaker ReadingMaker { get; }
-        ILogger Logger;
+        ILogger Logger { get; }
 
         public MeterReadingsController(IMeterDBContext dbContext, IReadingMaker readingMaker, ILogger<MeterReadingsController> logger)
         {
