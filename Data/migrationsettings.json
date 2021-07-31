@@ -1,4 +1,4 @@
 {
-  "MeterReadingsDb": "../MeterReadings1.db",
+  "MeterReadingsDb": "../MeterReadings.db",
   "AccountsDataFile": "..\\SoftwareEngineerExercise\\Test_Accounts.csv"
 }
