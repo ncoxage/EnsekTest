@@ -16,8 +16,4 @@ C# Class Library - provides the database and file handling functionality.
 
 C# [Xunit](https://xunit.net/) Test project - unit/integration tests for the [Data](Data/README.md) library.
 
-## Errata
-
-- *Api link doesn't work outside Visual Studio ??*
-
 
