@@ -37,12 +37,12 @@ namespace Data
         {
             // get list of all DbSet properties
             var setProperties = GetType().GetProperties().Where(p => p.PropertyType.IsGenericType
-                                                                && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
+                                                                && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>)).GetEnumerator();
 
-            setProperties.ForEach(set =>
+            while(setProperties.MoveNext())
             {
                 // find Type of set 
-                var setType = set.PropertyType.GenericTypeArguments[0];
+                var setType = setProperties.Current.PropertyType.GenericTypeArguments[0];
 
                 // get static Configure method
                 var configure = setType.GetMethod("Configure", new Type[] { typeof(ModelBuilder) });
