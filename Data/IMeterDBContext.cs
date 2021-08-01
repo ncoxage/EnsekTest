@@ -10,8 +10,6 @@ namespace Data
         DbSet<AccountModel> Accounts { get; }
         DbSet<ReadingModel> Readings { get; }
 
-        int SaveChanges();
-
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -31,23 +31,20 @@ namespace Data
         /// </summary>
         /// <param name="modelBuilder"></param>
         /// <remarks>
-        /// Need to remove literals, and assumed method signatures - possibly using config/reflection combination.
+        /// Need to remove literal "Configure", and assumed method signature - possibly using config/reflection combination.
         /// </remarks>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var loaded = new List<string>();
-            var entityMethod = typeof(ModelBuilder).GetMethods().Where(m => m.Name == "Entity" && m.IsGenericMethod).First();
-
+            // get list of all DbSet properties
             var setProperties = GetType().GetProperties().Where(p => p.PropertyType.IsGenericType
                                                                 && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
 
             setProperties.ForEach(set =>
             {
+                // find Type of set 
                 var setType = set.PropertyType.GenericTypeArguments[0];
 
-                var entity = entityMethod.MakeGenericMethod(new Type[] { setType });
-                entity.Invoke(modelBuilder, Array.Empty<object>());
-
+                // get static Configure method
                 var configure = setType.GetMethod("Configure", new Type[] { typeof(ModelBuilder) });
 
                 if (configure != null)
