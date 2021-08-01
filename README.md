@@ -4,9 +4,9 @@ Visual Studio solution for the ENSEK [Software Engineer (technical) test](Softwa
 
 ## Projects
 
-### [Api](Api/README.md) 
+### [Api](ApiProject/README.md) 
 
-ASP.Net Core Web API project - implements the '[meter-reading-uploads](Api/Controllers/MeterReadingsController.cs)' endpoint.
+ASP.Net Core Web API project - implements the '[meter-reading-uploads](ApiProject/Controllers/MeterReadingsController.cs)' endpoint.
 
 ### [Data](Data/README.md)
 

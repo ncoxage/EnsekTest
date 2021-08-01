@@ -18,7 +18,7 @@ This will result in the creation of the database and loading of the Accounts con
 
 #### <a name="meterreadingsdb" />MeterReadingsDb
 
-File path of the MeterReadings ([Sqlite](https://www.sqlite.org/index.html)) database file. This should reference the same file specified in the [Api settings](../Api/README.md#meterreadingsdb).
+File path of the MeterReadings ([Sqlite](https://www.sqlite.org/index.html)) database file. This should reference the same file specified in the [Api settings](../ApiProject/README.md#meterreadingsdb).
 
 #### AccountsDataFile
 
