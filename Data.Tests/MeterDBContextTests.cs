@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using FluentAssertions;
 using Xunit;
@@ -12,10 +13,10 @@ namespace Data.Tests
     public class MeterDBContextTests
     {
         const string CONFIG_MSG = "Configure called";
-        class DummySet
+        class DummySet : IEntityTypeConfiguration<DummySet>
         {
 #pragma warning disable IDE0060 // Remove unused parameter
-            public static void Configure(ModelBuilder builder)
+            public void Configure(EntityTypeBuilder<DummySet> builder)
 #pragma warning restore IDE0060 // Remove unused parameter
             {
                 throw new ApplicationException(CONFIG_MSG);

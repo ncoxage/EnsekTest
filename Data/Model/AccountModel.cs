@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Data.Model
 {
-    public class AccountModel
+    public class AccountModel : IEntityTypeConfiguration<AccountModel>
     {
         public int AccountId { get; private set; }
 
@@ -13,20 +15,18 @@ namespace Data.Model
 
         public virtual List<ReadingModel> Readings { get; private set; }
 
-        public AccountModel( int accountId, string firstName = null, string lastName = null)
+        public AccountModel() { }
+
+        public AccountModel(int accountId, string firstName = null, string lastName = null)
         {
             AccountId = accountId;
             FirstName = firstName;
             LastName = lastName;
         }
 
-        public static void Configure(ModelBuilder builder)
+        public void Configure(EntityTypeBuilder<AccountModel> builder)
         {
-            builder.Entity<AccountModel>(
-                e =>
-                {
-                    e.HasKey(acc => acc.AccountId);
-                });
+            builder.HasKey(acc => acc.AccountId);
         }
     }
 }

@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Data.Model
 {
-    public class ReadingModel
+    public class ReadingModel : IEntityTypeConfiguration<ReadingModel>
     {
         public int Id { get; private set; }
         public int AccountId { get; private set; }
@@ -12,25 +14,22 @@ namespace Data.Model
 
         public virtual AccountModel Account { get; private set; }
 
-        public ReadingModel( int accountId, DateTime readAt, int value)
+        public ReadingModel() { }
+
+        public ReadingModel(int accountId, DateTime readAt, int value)
         {
             AccountId = accountId;
             ReadAt = readAt;
             Value = value;
         }
 
-        public static void Configure(ModelBuilder builder)
+        public void Configure(EntityTypeBuilder<ReadingModel> builder)
         {
-            builder.Entity<ReadingModel>(
-                e =>
-                {
-                    e.HasOne(read => read.Account)
-                          .WithMany(acc => acc.Readings);
+            builder.HasOne(read => read.Account)
+                   .WithMany(acc => acc.Readings);
 
-                    e.HasIndex(e => new { e.AccountId, e.ReadAt })
-                     .IsUnique();
-                }
-            );
+            builder.HasIndex(e => new { e.AccountId, e.ReadAt })
+                   .IsUnique();
         }
     }
 }

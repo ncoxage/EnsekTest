@@ -24,31 +24,24 @@ namespace Data
             optionsBuilder.UseLazyLoadingProxies();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="modelBuilder"></param>
-        /// <remarks>
-        /// Need to remove literal "Configure", and assumed method signature - possibly using config/reflection combination.
-        /// </remarks>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // get list of all DbSet properties
-            var setProperties = GetType().GetProperties().Where(p => p.PropertyType.IsGenericType
-                                                                && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>)).GetEnumerator();
+            foreach (var setProperty in GetType().GetProperties()
+                                                 .Where(p => p.PropertyType.IsGenericType
+                                                                && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>)))
 
-            while(setProperties.MoveNext())
             {
                 // find Type of set 
-                var setType = setProperties.Current.PropertyType.GenericTypeArguments[0];
+                var setType = setProperty.PropertyType.GenericTypeArguments[0];
 
-                // get static Configure method
-                var configure = setType.GetMethod("Configure", new Type[] { typeof(ModelBuilder) });
+                var entityMethod = typeof(ModelBuilder).GetMethods()
+                                                       .Where(m => m.Name == "ApplyConfiguration"  //ideally this should be read from config
+                                                                && m.IsGenericMethod)
+                                                       .First();
 
-                if (configure != null)
-                {
-                    configure.Invoke(null, new object[] { modelBuilder });
-                }
+                var entity = entityMethod.MakeGenericMethod(new Type[] { setType });
+                entity.Invoke(modelBuilder, new object[] { Activator.CreateInstance(setType) });
             };
         }
     }
